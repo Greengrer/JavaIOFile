@@ -8,12 +8,18 @@ import java.util.Iterator;
 import java.util.List;
 
 public class FileAnalyzer {
-
+    //checking if it is a file - done.
+    //checking if it isn't null - done.
+    //?? Ctrl +Alt +L
+    // Send over to git
     public static void main(String[] args) throws IOException {
         if (args.length != 2) {
             throw new IllegalArgumentException("There is more or less than two arguments.");
         }
         File fileToAnalyze = new File(args[0]);
+        if (!fileToAnalyze.isFile()) {
+            throw new IllegalArgumentException(fileToAnalyze.getAbsolutePath() + " isn't a file.");
+        }
         String sample = args[1];
 
         String fileContent;
@@ -55,7 +61,7 @@ public class FileAnalyzer {
     static int getAmountOfInstances(String fileContent, String sample) {
         int amountOfInstances = 0;
         int indexOfInstance = fileContent.indexOf(sample);
-        while (indexOfInstance != -1 ) {
+        while (indexOfInstance != -1) {
             amountOfInstances++;
             indexOfInstance = fileContent.indexOf(sample, indexOfInstance + sample.length());
         }
@@ -65,10 +71,13 @@ public class FileAnalyzer {
     static void printAmountOfInstances(int amount) {
         System.out.println(amount);
     }
+
     static void printEverySentenceWithInstance(List<String> sentencesWithInstances) {
-        Iterator iterator = sentencesWithInstances.iterator();
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
+        if (sentencesWithInstances != null) {
+            Iterator iterator = sentencesWithInstances.iterator();
+            while (iterator.hasNext()) {
+                System.out.println(iterator.next());
+            }
         }
     }
 }

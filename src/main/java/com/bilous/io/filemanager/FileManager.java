@@ -3,9 +3,6 @@ package com.bilous.io.filemanager;
 import java.io.*;
 
 public class FileManager {
-    public static void main(String[] args) {
-
-    }
 
     // public static int countFiles(String path) - принимает путь к папке,
     // возвращает количество файлов в папке и всех подпапках по пути
@@ -18,11 +15,11 @@ public class FileManager {
         int count = 0;
         File[] listOfElements = directory.listFiles();
         if (listOfElements != null) {
-            for (File element: listOfElements) {
-                if(element.isFile()) {
+            for (File element : listOfElements) {
+                if (element.isFile()) {
                     count++;
                 } else {
-                    count+=countFiles(element.getAbsolutePath());
+                    count += countFiles(element.getAbsolutePath());
                 }
             }
         }
@@ -40,10 +37,10 @@ public class FileManager {
         int count = 0;
         File[] listOfElements = directory.listFiles();
         if (listOfElements != null) {
-            for (File element: listOfElements) {
-                if(element.isDirectory()) {
+            for (File element : listOfElements) {
+                if (element.isDirectory()) {
                     count++;
-                    count+=countDirs(element.getAbsolutePath());
+                    count += countDirs(element.getAbsolutePath());
                 }
             }
         }
@@ -62,7 +59,7 @@ public class FileManager {
         } else {
             File newDestinationDir = createDirInDestinationDir(copyFrom, copyTo);
             File[] arrayOfElements = copyFrom.listFiles();
-            if (arrayOfElements != null) {
+            if (arrayOfElements.length != 0) {
                 for (File element : arrayOfElements) {
 
                     if (element.isFile()) {
@@ -76,7 +73,7 @@ public class FileManager {
     }
 
     static File createDirInDestinationDir(File copyFrom, File copyTo) {
-        File newDestinationDir = new File(copyTo.getPath() + "/" + copyFrom.getName());
+        File newDestinationDir = new File(copyTo.getPath(), copyFrom.getName());
         newDestinationDir.mkdir();
         return newDestinationDir;
     }
@@ -88,8 +85,8 @@ public class FileManager {
         byte[] buff = new byte[(int) copyFrom.length()];
         inputStreamFrom.read(buff, 0, (int) copyFrom.length());
 
-        File destinationChild = new File(copyTo.getPath() + "/" + copyFrom.getName());
-        createFileInDestination(destinationChild);
+        File destinationChild = new File(copyTo.getPath(), copyFrom.getName());
+        destinationChild.createNewFile();
         FileOutputStream outputStreamTo = new FileOutputStream(destinationChild);
         outputStreamTo.write(buff, 0, (int) copyFrom.length());
 
@@ -97,11 +94,6 @@ public class FileManager {
         outputStreamTo.close();
     }
 
-    static void createFileInDestination(File destinationChild) throws IOException {
-        if (!destinationChild.exists()) {
-            destinationChild.createNewFile();
-        }
-    }
 
     private static void checkEnoughSpaceInDestination(File copyFrom, File copyTo) {
         if (copyTo.getFreeSpace() < copyFrom.length()) {

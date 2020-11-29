@@ -21,21 +21,28 @@ class FileManagerTest {
     private String sourceDir = pathToResources + "sourceDir";
     private String destDir = pathToResources + "destDir";
 
-
-
     @BeforeEach
     public void before() {
+        File destDirectory = new File(destDir);
+        File dir2 = new File(pathToDirCountTest, "dir1/dir2");
+        File emptyDir = new File(pathToEmptyDir);
+        destDirectory.mkdir();
+        dir2.mkdir();
+        emptyDir.mkdir();
     }
 
     @AfterEach
     public void after() {
         File dirToEmpty = new File(pathToResources + "destDir");
         File filledDirToDelete = new File(dirToEmpty.getPath() + "/sourceDir");
-        File dirToDeleteInFilled = new File(filledDirToDelete.getPath() + "/DirToCopy" );
+        File dirToDeleteInFilled = new File(filledDirToDelete.getPath() + "/DirToCopy");
         File fileToDeleteInFilled = new File(filledDirToDelete.getPath() + "/fileToCopy");
+        File destDirectory = new File(destDir);
+        File dir2 = new File(pathToDirCountTest, "dir1/dir2");
+        File emptyDir = new File(pathToEmptyDir);
 
         File fileToDelete = new File(dirToEmpty.getPath() + "/fileToAnalyze.txt");
-        File emptyDirToDelete = new File(dirToEmpty.getPath() + "/EmptyDir" );
+        File emptyDirToDelete = new File(dirToEmpty.getPath() + "/EmptyDir");
 
         fileToDeleteInFilled.delete();
         dirToDeleteInFilled.delete();
@@ -43,10 +50,13 @@ class FileManagerTest {
 
         emptyDirToDelete.delete();
         fileToDelete.delete();
+        destDirectory.delete();
+        dir2.delete();
+        emptyDir.delete();
     }
 
     @Test
-    void testCountFilesOnInvalidPath(){
+    void testCountFilesOnInvalidPath() {
         assertThrows(IllegalArgumentException.class, () -> {
             FileManager.countFiles(invalidPath);
         });
@@ -76,13 +86,13 @@ class FileManagerTest {
     }
 
     @Test
-    void testCountFiles() throws IOException{
+    void testCountFiles() throws IOException {
         assertEquals(2, FileManager.countFiles(pathToDirCountTest));
     }
 
     @Test
-    void testCountDirs() throws IOException{
-        assertEquals( 2, FileManager.countDirs(pathToDirCountTest));
+    void testCountDirs() throws IOException {
+        assertEquals(2, FileManager.countDirs(pathToDirCountTest));
     }
 
     @Test
@@ -111,7 +121,6 @@ class FileManagerTest {
 
     @Test
     void testCopyOnDestinationWithoutEnoughFreeSpace() throws IOException {
-
     }
 
     @Test
@@ -141,18 +150,6 @@ class FileManagerTest {
         FileManager.createDirInDestinationDir(new File(pathToResources + "EmptyDir"), parentDir);
 
         assertTrue(childDir.exists());
-    }
-
-    @Test
-    void testCreateFileInDestinationDir() {
-        File parentDir = new File(destDir);
-        File childFile = new File(destDir + "/fileToAnalyze.txt");
-
-        assertTrue(!childFile.exists());
-
-        FileManager.createDirInDestinationDir(new File(pathToResources + "fileToAnalyze.txt"), parentDir);
-
-        assertTrue(childFile.exists());
     }
 
 }

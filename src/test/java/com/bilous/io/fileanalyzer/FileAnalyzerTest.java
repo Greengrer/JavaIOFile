@@ -12,7 +12,7 @@ class FileAnalyzerTest {
     @Test
     void testReadFileIntoString() throws IOException {
         //when
-        File file = new File("src/fileToCopy/resources/fileToAnalyze.txt");
+        File file = new File("src/test/resources/fileToAnalyze.txt");
         //then
         assertEquals("Ducky day. No duck! Dramatic drunk.", FileAnalyzer.readFileIntoString(file));
 
